@@ -13,7 +13,7 @@ import (
 
 type ChatCompletionConfigInputDTO struct {
 	Model                string
-	ModelMaxToken        int
+	ModelMaxTokens       int
 	Temperature          float32
 	TopP                 float32
 	N                    int
@@ -43,7 +43,7 @@ type ChatCompletionUseCase struct {
 	Stream       chan ChatCompletionOutputDTO
 }
 
-func newChatCompletionUseCase(chatGateway gateway.ChatGateway, openAiClient *openai.Client, stream chan ChatCompletionOutputDTO) *ChatCompletionUseCase {
+func NewChatCompletionUseCase(chatGateway gateway.ChatGateway, openAiClient *openai.Client, stream chan ChatCompletionOutputDTO) *ChatCompletionUseCase {
 	return &ChatCompletionUseCase{
 		ChatGateway:  chatGateway,
 		OpenAiClient: openAiClient,
@@ -164,7 +164,7 @@ func (uc *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompleti
 }
 
 func createNewChat(input ChatCompletionInputDTO) (*entity.Chat, error) {
-	model := entity.NewModel(input.Config.Model, input.Config.ModelMaxToken)
+	model := entity.NewModel(input.Config.Model, input.Config.ModelMaxTokens)
 
 	chatConfig := &entity.ChatConfig{
 		Temperature:      input.Config.Temperature,
